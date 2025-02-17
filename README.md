@@ -1,4 +1,4 @@
-# 🔥 Vue 3 Pokémon Explorer
+# 🟡 Vue 3 Pokémon Explorer
 
 **A modern Pokémon exploration app** that allows users to browse Pokémon, view detailed information, and authenticate via Firebase. Built with Vue 3, TypeScript, and TailwindCSS, this project provides an engaging and seamless user experience.
 
