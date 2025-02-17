@@ -84,7 +84,7 @@ npm run preview
 
 ## 🌐 Live Demo
 
-Visit the live version of this form: [Pokémon Explorer](https://pokemonizer.netlify.app/)
+Visit the live version of this project: [Pokémon Explorer](https://pokemonizer.netlify.app/)
 
 ---
 
