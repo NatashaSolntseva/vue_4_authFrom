@@ -4,6 +4,7 @@ import { useRoute, useRouter } from 'vue-router'
 import { fetchPokemonByName, type IPokemon } from '@/shared/api/pokemon'
 import { URL_LIST } from '@/shared/config/routes'
 import MainLayout from '@/widgets/MainLayout.vue'
+import CustomButton from '@/shared/ui/CustomButton.vue'
 
 const route = useRoute()
 const router = useRouter()
@@ -25,12 +26,11 @@ onMounted(loadPokemon)
 
 <template>
   <MainLayout>
-    <div class="min-h-screen bg-[#355b3e] flex flex-col items-center justify-center py-10 px-6">
+    <div class="h-[calc(100vh-100px)] flex flex-col items-center justify-center">
       <div v-if="isLoading" class="text-white text-xl">Loading...</div>
-
       <div
         v-else-if="pokemon"
-        class="bg-white p-6 rounded-lg shadow-lg w-full max-w-lg text-center"
+        class="bg-white p-6 rounded-lg shadow-lg w-full max-w-lg text-center flex flex-col items-center"
       >
         <div class="flex items-center justify-center h-64">
           <img
@@ -40,15 +40,10 @@ onMounted(loadPokemon)
           />
         </div>
         <h1 class="text-2xl font-bold text-gray-800 mb-4 capitalize">{{ pokemon.name }}</h1>
-
-        <button
-          @click="router.push(URL_LIST)"
-          class="mt-4 px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition"
-        >
-          Back
-        </button>
+        <div class="w-full flex justify-center mt-4">
+          <CustomButton type="filled" @click="router.push(URL_LIST)">Back</CustomButton>
+        </div>
       </div>
-
       <div v-else class="text-white text-xl">Pokémon not found</div>
     </div>
   </MainLayout>
