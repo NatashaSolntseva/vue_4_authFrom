@@ -1,71 +1,12 @@
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted, computed } from 'vue'
-import { fetchPokemonList, fetchPokemonByName, type IPokemon } from '@/shared/api/pokemon'
+import { onMounted, onUnmounted, ref } from 'vue'
+import { usePokemon } from '@/shared/store/usePokemon'
 import { URL_LIST_ITEM } from '@/shared/config/routes'
 import MainLayout from '@/widgets/MainLayout.vue'
 import CustomButton from '@/shared/ui/CustomButton.vue'
 
-const pokemonList = ref<IPokemon[]>([])
-const searchQuery = ref('')
-const notFoundQuery = ref('')
-const isLoadingSearch = ref(false)
-const isSearchMode = ref(false)
-const isLoading = ref(true)
-const isLoadingMore = ref(false)
-const limit = 12
-const offset = ref(0)
-const hasMore = ref(true)
+const store = usePokemon()
 const showScrollUp = ref(false)
-
-const loadPokemon = async () => {
-  isLoading.value = true
-  pokemonList.value = await fetchPokemonList(limit, offset.value)
-  isLoading.value = false
-  notFoundQuery.value = ''
-}
-
-const searchPokemon = async () => {
-  if (!searchQuery.value.trim()) {
-    await loadPokemon()
-    return
-  }
-
-  isLoadingSearch.value = true
-  isSearchMode.value = true
-
-  isLoading.value = true
-  const pokemon = await fetchPokemonByName(searchQuery.value.toLowerCase())
-
-  if (pokemon) {
-    pokemonList.value = [pokemon]
-    notFoundQuery.value = ''
-  } else {
-    pokemonList.value = []
-    notFoundQuery.value = searchQuery.value
-  }
-
-  isLoading.value = false
-  isLoadingSearch.value = false
-}
-
-const resetSearch = async () => {
-  searchQuery.value = ''
-  isSearchMode.value = false
-  await loadPokemon()
-}
-const loadMorePokemon = async () => {
-  if (!hasMore.value) return
-  isLoadingMore.value = true
-  offset.value += limit
-  const newPokemon = await fetchPokemonList(limit, offset.value)
-
-  if (newPokemon.length === 0) {
-    hasMore.value = false
-  }
-
-  pokemonList.value = [...pokemonList.value, ...newPokemon]
-  isLoadingMore.value = false
-}
 
 const scrollToTop = () => {
   window.scrollTo({ top: 0, behavior: 'smooth' })
@@ -76,7 +17,7 @@ const handleScroll = () => {
 }
 
 onMounted(() => {
-  loadPokemon()
+  store.loadPokemon()
   window.addEventListener('scroll', handleScroll)
 })
 
@@ -92,34 +33,34 @@ onUnmounted(() => {
 
       <div class="flex flex-col sm:flex-row items-center gap-4 mb-6 w-full max-w-md">
         <input
-          v-model="searchQuery"
+          v-model="store.searchQuery"
           type="text"
           placeholder="Search Pokémon..."
           class="w-full p-3 rounded-md border border-[#029664] bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#029664]"
-          @keyup.enter="searchPokemon"
+          @keyup.enter="store.searchPokemon"
         />
         <div class="w-full sm:w-auto flex justify-center">
           <CustomButton
             type="filled"
             class="w-full sm:w-auto min-w-[120px]"
-            @click="searchPokemon"
-            :disabled="isLoadingSearch"
+            @click="store.searchPokemon"
+            :disabled="store.isLoadingSearch"
           >
-            Search
+            {{ store.isLoadingSearch ? 'Searching...' : 'Search' }}
           </CustomButton>
         </div>
       </div>
 
-      <div v-if="isLoading" class="text-white text-xl">Loading...</div>
+      <div v-if="store.isLoading" class="text-white text-xl">Loading...</div>
 
-      <div v-else-if="pokemonList.length === 0" class="text-white text-xl text-center">
-        Pokémon "<span class="font-bold">{{ notFoundQuery }}</span
+      <div v-else-if="store.pokemonList.length === 0" class="text-white text-xl text-center">
+        Pokémon "<span class="font-bold">{{ store.notFoundQuery }}</span
         >" not found
       </div>
 
       <div v-else class="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-4 gap-6 w-full max-w-6xl">
         <router-link
-          v-for="pokemon in pokemonList"
+          v-for="pokemon in store.pokemonList"
           :key="pokemon.id"
           :to="`${URL_LIST_ITEM.replace(':id', pokemon.name)}`"
           class="group block"
@@ -133,13 +74,13 @@ onUnmounted(() => {
         </router-link>
       </div>
 
-      <div v-if="isSearchMode" class="mt-10 flex justify-center w-full">
-        <CustomButton type="filled" @click="resetSearch">Back to full list</CustomButton>
+      <div v-if="store.isSearchMode" class="mt-10 flex justify-center w-full">
+        <CustomButton type="filled" @click="store.resetSearch">Back to full list</CustomButton>
       </div>
 
-      <div v-else-if="hasMore" class="mt-10 flex justify-center w-full">
-        <CustomButton :disabled="isLoadingMore" type="filled" @click="loadMorePokemon">
-          {{ isLoadingMore ? 'Loading...' : 'Load More' }}
+      <div v-else-if="store.hasMore" class="mt-10 flex justify-center w-full">
+        <CustomButton :disabled="store.isLoadingMore" type="filled" @click="store.loadMorePokemon">
+          {{ store.isLoadingMore ? 'Loading...' : 'Load More' }}
         </CustomButton>
       </div>
 
