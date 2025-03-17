@@ -4,23 +4,35 @@ import { fetchPokemonList, fetchPokemonByName, type IPokemon } from '@/shared/ap
 
 export const usePokemon = defineStore('pokemon', () => {
   const pokemonList = ref<IPokemon[]>([])
+  const nextPage = ref<string | null>(null)
+  const previousPage = ref<string | null>(null)
+  const isLoading = ref(false)
+  const isLoadingMore = ref(false)
+  const isLoaded = ref(false)
+  const errorMessage = ref('')
+
   const searchQuery = ref('')
-  const notFoundQuery = ref('')
   const isLoadingSearch = ref(false)
   const isSearchMode = ref(false)
-  const isLoading = ref(true)
-  const isLoadingMore = ref(false)
-  const limit = 12
-  const offset = ref(0)
-  const hasMore = ref(true)
+  const notFoundQuery = ref('')
 
   const loadPokemon = async () => {
-    if (pokemonList.value.length > 0) return
+    if (isLoaded.value) return
 
     isLoading.value = true
-    pokemonList.value = await fetchPokemonList(limit, offset.value)
-    isLoading.value = false
-    notFoundQuery.value = ''
+    errorMessage.value = ''
+
+    try {
+      const { pokemon, next, previous } = await fetchPokemonList()
+      pokemonList.value = pokemon
+      nextPage.value = next
+      previousPage.value = previous
+      isLoaded.value = true
+    } catch (error) {
+      errorMessage.value = 'Failed to load Pokémon. Please try again.'
+    } finally {
+      isLoading.value = false
+    }
   }
 
   const searchPokemon = async () => {
@@ -31,51 +43,63 @@ export const usePokemon = defineStore('pokemon', () => {
 
     isLoadingSearch.value = true
     isSearchMode.value = true
+    errorMessage.value = ''
 
-    isLoading.value = true
-    const pokemon = await fetchPokemonByName(searchQuery.value.toLowerCase())
+    try {
+      isLoading.value = true
+      const pokemon = await fetchPokemonByName(searchQuery.value.toLowerCase())
 
-    if (pokemon) {
-      pokemonList.value = [pokemon]
-      notFoundQuery.value = ''
-    } else {
-      pokemonList.value = []
-      notFoundQuery.value = searchQuery.value
+      if (pokemon) {
+        pokemonList.value = [pokemon]
+        notFoundQuery.value = ''
+      } else {
+        pokemonList.value = []
+        notFoundQuery.value = searchQuery.value
+      }
+    } catch (error) {
+      errorMessage.value = 'Failed to find Pokémon. Please try again.'
+    } finally {
+      isLoading.value = false
+      isLoadingSearch.value = false
     }
-
-    isLoading.value = false
-    isLoadingSearch.value = false
   }
 
   const resetSearch = async () => {
     searchQuery.value = ''
     isSearchMode.value = false
+    isLoaded.value = false
     await loadPokemon()
   }
 
   const loadMorePokemon = async () => {
-    if (!hasMore.value) return
+    if (!nextPage.value) return
     isLoadingMore.value = true
-    offset.value += limit
-    const newPokemon = await fetchPokemonList(limit, offset.value)
+    errorMessage.value = ''
 
-    if (newPokemon.length === 0) {
-      hasMore.value = false
+    try {
+      const { pokemon, next } = await fetchPokemonList(nextPage.value)
+      pokemonList.value = [...pokemonList.value, ...pokemon]
+      nextPage.value = next
+    } catch (error) {
+      console.error('Error loading more Pokémon:', error)
+      errorMessage.value = 'Failed to load more Pokémon. Please try again.'
+    } finally {
+      isLoadingMore.value = false
     }
-
-    pokemonList.value = [...pokemonList.value, ...newPokemon]
-    isLoadingMore.value = false
   }
 
   return {
     pokemonList,
+    nextPage,
+    previousPage,
     searchQuery,
     notFoundQuery,
     isLoadingSearch,
     isSearchMode,
     isLoading,
     isLoadingMore,
-    hasMore,
+    isLoaded,
+    errorMessage,
     loadPokemon,
     searchPokemon,
     resetSearch,

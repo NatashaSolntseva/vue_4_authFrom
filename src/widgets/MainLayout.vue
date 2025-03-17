@@ -32,7 +32,7 @@ const handleLogout = async () => {
       <CustomButton type="outlined" @click="handleLogout">Log out</CustomButton>
     </header>
 
-    <main class="flex-1 flex flex-col items-center py-2 px-6 mt-[80px] mx-4 md:mx-6 lg:mx-12">
+    <main class="flex-1 flex flex-col items-center mt-[132px] md:mt-[80px] mx-4 md:mx-6 lg:mx-12">
       <slot></slot>
     </main>
   </div>

@@ -6,15 +6,27 @@ export interface IPokemon {
   id: number
   name: string
   image: string
+  types: string[]
+  abilities: string[]
+  weight: number
+  height: number
 }
 
-export const fetchPokemonList = async (limit = 12, offset = 0): Promise<IPokemon[]> => {
+export interface IPokemonListResponse {
+  pokemon: IPokemon[]
+  next: string | null
+  previous: string | null
+}
+
+export const fetchPokemonList = async (
+  url: string = `${API_URL}?limit=24&offset=0`,
+): Promise<IPokemonListResponse> => {
   try {
-    const response = await axios.get(`${API_URL}?limit=${limit}&offset=${offset}`)
-    const pokemonList = response.data.results
+    const response = await axios.get(url)
+    const { results, next, previous } = response.data
 
     const pokemonData = await Promise.all(
-      pokemonList.map(async (pokemon: { name: string }) => {
+      results.map(async (pokemon: { name: string }) => {
         const details = await axios.get(`${API_URL}/${pokemon.name}`)
         return {
           id: details.data.id,
@@ -24,10 +36,10 @@ export const fetchPokemonList = async (limit = 12, offset = 0): Promise<IPokemon
       }),
     )
 
-    return pokemonData
+    return { pokemon: pokemonData, next, previous }
   } catch (error) {
     console.error('Error fetching Pokémon list:', error)
-    return []
+    return { pokemon: [], next: null, previous: null }
   }
 }
 
@@ -38,6 +50,10 @@ export const fetchPokemonByName = async (name: string): Promise<IPokemon | null>
       id: response.data.id,
       name: response.data.name,
       image: response.data.sprites.other['official-artwork'].front_default,
+      types: response.data.types.map((t: any) => t.type.name),
+      abilities: response.data.abilities.map((a: any) => a.ability.name),
+      weight: response.data.weight / 10,
+      height: response.data.height / 10,
     }
   } catch (error) {
     console.error(`Error fetching Pokémon with name ${name}:`, error)

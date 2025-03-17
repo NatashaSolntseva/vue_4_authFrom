@@ -26,7 +26,7 @@ onMounted(loadPokemon)
 
 <template>
   <MainLayout>
-    <div class="h-[calc(100vh-100px)] flex flex-col items-center justify-center">
+    <div class="min-h-[calc(100vh-135px)] flex flex-col items-center justify-center mt-[40px]">
       <div v-if="isLoading" class="text-white text-xl">Loading...</div>
       <div
         v-else-if="pokemon"
@@ -40,11 +40,20 @@ onMounted(loadPokemon)
           />
         </div>
         <h1 class="text-2xl font-bold text-gray-800 mb-4 capitalize">{{ pokemon.name }}</h1>
+        <p class="text-gray-700"><strong>Type:</strong> {{ pokemon.types.join(', ') }}</p>
+        <p class="text-gray-700"><strong>Abilities:</strong> {{ pokemon.abilities.join(', ') }}</p>
+        <p class="text-gray-700"><strong>Weight:</strong> {{ pokemon.weight }} kg</p>
+        <p class="text-gray-700"><strong>Height:</strong> {{ pokemon.height }} m</p>
         <div class="w-full flex justify-center mt-4">
           <CustomButton type="filled" @click="router.push(URL_LIST)">Back</CustomButton>
         </div>
       </div>
-      <div v-else class="text-white text-xl">Pokémon not found</div>
+      <div v-else>
+        <div class="text-white text-xl">Pokémon not found</div>
+        <div class="w-full flex justify-center mt-4">
+          <CustomButton type="filled" @click="router.push(URL_LIST)">Back</CustomButton>
+        </div>
+      </div>
     </div>
   </MainLayout>
 </template>

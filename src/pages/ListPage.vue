@@ -17,7 +17,9 @@ const handleScroll = () => {
 }
 
 onMounted(() => {
-  store.loadPokemon()
+  if (!store.isLoaded) {
+    store.loadPokemon()
+  }
   window.addEventListener('scroll', handleScroll)
 })
 
@@ -53,6 +55,11 @@ onUnmounted(() => {
 
       <div v-if="store.isLoading" class="text-white text-xl">Loading...</div>
 
+      <div v-else-if="store.errorMessage" class="text-red-500 text-xl text-center">
+        {{ store.errorMessage }}
+        <CustomButton type="filled" class="mt-4" @click="store.loadPokemon">Retry</CustomButton>
+      </div>
+
       <div v-else-if="store.pokemonList.length === 0" class="text-white text-xl text-center">
         Pokémon "<span class="font-bold">{{ store.notFoundQuery }}</span
         >" not found
@@ -78,7 +85,7 @@ onUnmounted(() => {
         <CustomButton type="filled" @click="store.resetSearch">Back to full list</CustomButton>
       </div>
 
-      <div v-else-if="store.hasMore" class="mt-10 flex justify-center w-full">
+      <div v-else-if="store.nextPage" class="mt-10 flex justify-center w-full">
         <CustomButton :disabled="store.isLoadingMore" type="filled" @click="store.loadMorePokemon">
           {{ store.isLoadingMore ? 'Loading...' : 'Load More' }}
         </CustomButton>
