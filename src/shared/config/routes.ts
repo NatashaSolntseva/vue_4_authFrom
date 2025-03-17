@@ -1,0 +1,6 @@
+export const URL_SIGN_IN = '/signin'
+export const URL_SIGN_UP = '/signup'
+export const URL_FORGOT_PASSWORD = '/forgot-password'
+export const URL_LIST = '/list'
+export const URL_LIST_ITEM = '/list/:id'
+export const URL_NOT_FOUND = '/:pathMatch(.*)*'

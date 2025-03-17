@@ -1,39 +1,101 @@
-# .
+# 🟡 Vue 3 Pokémon Explorer
 
-This template should help get you started developing with Vue 3 in Vite.
+**A modern Pokémon exploration app** that allows users to browse Pokémon, view detailed information, and authenticate via Firebase. Built with Vue 3, TypeScript, and TailwindCSS, this project provides an engaging and seamless user experience.
 
-## Recommended IDE Setup
+---
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+## 🚀 Technologies Used
 
-## Type Support for `.vue` Imports in TS
+- **Vue 3**: JavaScript framework for building the user interface.
+- **Vite**: Lightning-fast build tool for modern web projects.
+- **TypeScript**: Static typing for JavaScript to improve code quality.
+- **TailwindCSS**: Utility-first CSS framework for flexible styling.
+- **Axios** – Fetching Pokémon data from PokeAPI.
+- **PokeAPI** – Retrieves live Pokémon data. [API](https://pokeapi.co/)
+- **Firebase Authentication** – Secure user authentication.
+- **Vue Router** – Client-side navigation.
+- **ESLint + Prettier**: Linting and code formatting.
 
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) to make the TypeScript language service aware of `.vue` types.
+---
 
-## Customize configuration
+## 🛠️ Features
 
-See [Vite Configuration Reference](https://vite.dev/config/).
+- **Browse Pokémon** – Displays a list of Pokémon with images and names.
+- **Pokémon Details** – View stats, types, and official artwork.
+- **User Authentication** – Sign up, log in, and log out with Firebase.
+- **Protected Routes** – Users must be logged in to access Pokémon details.
+- **Responsive Design** – Works on all screen sizes.
+- **Optimized Performance** – Built with Vite for fast development and production builds.
+- **Error Handling** – Gracefully handles API errors.
 
-## Project Setup
+---
 
-```sh
+## 🔧 Project Setup
+
+Follow these steps to set up and run the project locally:
+
+### 1. Clone the repository:
+
+```bash
+git clone git@github.com:NatashaSolntseva/vue_4_authFrom.git
+cd vue_4_authFrom
+```
+
+### 2. Install dependencies:
+
+```bash
+
 npm install
+
 ```
 
-### Compile and Hot-Reload for Development
+### 3. Add API Keys:
 
-```sh
+Create a .env file in the root directory and add your API keys:
+
+```bash
+# Firebase API Config
+VITE_FIREBASE_API_KEY=your_api_key
+VITE_FIREBASE_AUTH_DOMAIN=your_project_id.firebaseapp.com
+VITE_FIREBASE_PROJECT_ID=your_project_id
+VITE_FIREBASE_STORAGE_BUCKET=your_storage_bucket
+VITE_FIREBASE_MESSAGING_SENDER_ID=your_messaging_sender_id
+VITE_FIREBASE_APP_ID=your_app_id
+```
+
+### 4. Run the development server:
+
+```bash
 npm run dev
+
 ```
 
-### Type-Check, Compile and Minify for Production
+### 5. Build for production:
 
-```sh
+```bash
 npm run build
 ```
 
-### Lint with [ESLint](https://eslint.org/)
+### 6. Preview the production build:
 
-```sh
-npm run lint
+```bash
+npm run preview
 ```
+
+## 🌐 Live Demo
+
+Visit the live version of this project: [Pokémon Explorer](https://pokemonizer.netlify.app/)
+
+---
+
+## 👩‍💻 Author
+
+Natasha Solntseva
+
+[LinkedIn](https://www.linkedin.com/in/natalia-shmatenko-2766b830)
+
+---
+
+## 📜 License
+
+This project is licensed under the MIT License.
