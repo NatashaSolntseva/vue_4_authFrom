@@ -29,7 +29,9 @@ const handleGoogleLogin = async () => {
     >
       <div class="flex md:hidden items-center justify-center space-x-3 py-[32px] bg-[#355b3e]">
         <img src="@/assets/icons/logo_white.svg" alt="Pokémonizer Logo" class="h-10" />
-        <span class="text-[32px] font-semibold text-[#FFFFFF] leading-[100%] flex items-center">
+        <span
+          class="font-inter text-[32px] font-semibold text-[#FFFFFF] leading-[100%] flex items-center"
+        >
           Pokémonizer
         </span>
       </div>
