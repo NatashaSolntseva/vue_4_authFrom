@@ -36,9 +36,34 @@ const routes = [
   { path: URL_NOT_FOUND, redirect: URL_SIGN_IN },
 ]
 
+// export const router = createRouter({
+//   history: createWebHistory(),
+//   routes,
+//   scrollBehavior(_to, _from, savedPosition) {
+//     if (savedPosition) {
+//       return savedPosition
+//     }
+
+//     const customScroll = sessionStorage.getItem('scrollPosition')
+//     if (customScroll) {
+//       sessionStorage.removeItem('scrollPosition')
+//       return { top: parseInt(customScroll) }
+//     }
+
+//     return { top: 0 }
+//   },
+// })
+
 export const router = createRouter({
   history: createWebHistory(),
   routes,
+  scrollBehavior(_to, _from, savedPosition) {
+    if (savedPosition) {
+      return savedPosition
+    } else {
+      return { top: 0 }
+    }
+  },
 })
 
 router.beforeEach((to, _from, next) => {

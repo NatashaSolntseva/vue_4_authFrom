@@ -18,13 +18,13 @@ const togglePassword = () => {
 
 <template>
   <div class="flex flex-col">
-    <label v-if="label" class="text-gray-800 font-medium mb-1">{{ label }}</label>
+    <label v-if="label" class="text-[#2f3d4c] font-medium mb-1">{{ label }}</label>
     <div class="relative">
       <input
         :type="isPassword && !showPassword ? 'password' : 'text'"
         v-model="modelValue"
         :placeholder="placeholder"
-        class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-500 focus:outline-none"
+        class="w-full px-4 py-2 border border-[#b8d6bf] rounded-md focus:ring-1 focus:ring-[#b8d6bf] focus:outline-none text-[#355b3e]"
       />
 
       <button
