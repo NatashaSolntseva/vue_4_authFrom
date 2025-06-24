@@ -7,7 +7,6 @@ import {
   fetchPokemonByName,
   type IPokemon,
 } from '@/shared/api/pokemon'
-import { URL_LIST } from '@/shared/config/routes'
 import MainLayout from '@/widgets/MainLayout.vue'
 import CustomButton from '@/shared/ui/CustomButton.vue'
 
