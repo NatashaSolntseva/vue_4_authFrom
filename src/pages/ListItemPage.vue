@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, onMounted, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { URL_LIST_ITEM } from '@/shared/config/routes'
+import { ROUTE_NAMES } from '@/shared/config/routes'
 import {
   fetchEvolutionChainByPokemonId,
   fetchPokemonByName,
@@ -111,7 +111,7 @@ onMounted(loadPokemon)
             <router-link
               v-for="evo in evolutionChain"
               :key="evo.name"
-              :to="`${URL_LIST_ITEM.replace(':id', evo.name)}`"
+              :to="{ name: ROUTE_NAMES.LIST_ITEM, params: { id: evo.name } }"
               class="flex flex-col items-center text-center"
               @click="showEvolutionModal = false"
             >

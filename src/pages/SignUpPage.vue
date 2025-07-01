@@ -2,7 +2,7 @@
 import { ref } from 'vue'
 import { registerUser } from '@/shared/api/auth'
 import { useRouter } from 'vue-router'
-import { URL_SIGN_IN } from '@/shared/config/routes'
+import { ROUTE_NAMES } from '@/shared/config/routes'
 import AuthLayout from '@/widgets/AuthLayout.vue'
 import CustomInput from '@/shared/ui/CustomInput.vue'
 import CustomButton from '@/shared/ui/CustomButton.vue'
@@ -15,7 +15,7 @@ const errorMessage = ref('')
 const handleSignUp = async () => {
   try {
     await registerUser(email.value, password.value)
-    router.push('/list')
+    router.push({ name: ROUTE_NAMES.LIST })
   } catch (error) {
     errorMessage.value = 'Registration error'
   }
@@ -37,7 +37,7 @@ const handleSignUp = async () => {
 
       <p v-if="errorMessage" class="text-red-500">{{ errorMessage }}</p>
       <div class="flex gap-6 mt-16">
-        <CustomButton type="outlined" :to="URL_SIGN_IN">Login</CustomButton>
+        <CustomButton type="outlined" :to="{ name: ROUTE_NAMES.SIGN_IN }">Login</CustomButton>
         <CustomButton type="filled" @click="handleSignUp">Sign Up</CustomButton>
       </div>
     </form>

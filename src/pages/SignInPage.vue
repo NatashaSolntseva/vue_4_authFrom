@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
-import { URL_LIST, URL_SIGN_UP, URL_FORGOT_PASSWORD } from '@/shared/config/routes'
+import { ROUTE_NAMES } from '@/shared/config/routes'
 import { loginUser } from '@/shared/api/auth'
 
 import AuthLayout from '@/widgets/AuthLayout.vue'
@@ -18,7 +18,7 @@ const errorMessage = ref('')
 const handleLogin = async () => {
   try {
     await loginUser(email.value, password.value, rememberMe.value)
-    router.push(URL_LIST)
+    router.push({ name: ROUTE_NAMES.LIST })
   } catch (error) {
     errorMessage.value = 'Login failed. Please check your email and password.'
   }
@@ -40,7 +40,10 @@ const handleLogin = async () => {
 
       <div class="flex justify-between items-center mt-4 mb-6">
         <CustomCheckbox v-model="rememberMe">Remember me</CustomCheckbox>
-        <router-link :to="URL_FORGOT_PASSWORD" class="text-green-600 hover:underline text-sm">
+        <router-link
+          :to="{ name: ROUTE_NAMES.FORGOT_PASSWORD }"
+          class="text-green-600 hover:underline text-sm"
+        >
           Forgot password?
         </router-link>
       </div>
@@ -49,7 +52,7 @@ const handleLogin = async () => {
 
       <div class="flex gap-6">
         <CustomButton type="filled" @click="handleLogin">Login</CustomButton>
-        <CustomButton type="outlined" :to="URL_SIGN_UP">Sign Up</CustomButton>
+        <CustomButton type="outlined" :to="{ name: ROUTE_NAMES.SIGN_UP }">Sign Up</CustomButton>
       </div>
     </form>
   </AuthLayout>

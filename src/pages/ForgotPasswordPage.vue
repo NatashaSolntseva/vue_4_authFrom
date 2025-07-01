@@ -4,7 +4,7 @@ import { resetPassword } from '@/shared/api/auth'
 import AuthLayout from '@/widgets/AuthLayout.vue'
 import CustomButton from '@/shared/ui/CustomButton.vue'
 import CustomInput from '@/shared/ui/CustomInput.vue'
-import { URL_SIGN_IN } from '@/shared/config/routes'
+import { ROUTE_NAMES } from '@/shared/config/routes'
 
 const email = ref('')
 const message = ref('')
@@ -30,7 +30,7 @@ const handleResetPassword = async () => {
     <p v-if="errorMessage" class="text-red-500 text-sm mt-2">{{ errorMessage }}</p>
 
     <div class="flex gap-6 mt-14">
-      <CustomButton type="outlined" :to="URL_SIGN_IN">Login</CustomButton>
+      <CustomButton type="outlined" :to="{ name: ROUTE_NAMES.SIGN_IN }">Login</CustomButton>
       <CustomButton type="filled" @click="handleResetPassword">Reset Password</CustomButton>
     </div>
   </AuthLayout>

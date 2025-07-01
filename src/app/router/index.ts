@@ -6,34 +6,45 @@ import SignUpPage from '@/pages/SignUpPage.vue'
 import ForgotPasswordPage from '@/pages/ForgotPasswordPage.vue'
 import ListPage from '@/pages/ListPage.vue'
 import ListItemPage from '@/pages/ListItemPage.vue'
-import {
-  URL_SIGN_IN,
-  URL_SIGN_UP,
-  URL_FORGOT_PASSWORD,
-  URL_LIST,
-  URL_LIST_ITEM,
-  URL_NOT_FOUND,
-} from '@/shared/config/routes'
+import { ROUTE_NAMES, ROUTE_PATHS } from '@/shared/config/routes'
 
 const routes = [
-  { path: '/', redirect: URL_SIGN_IN },
-  { path: URL_SIGN_IN, component: SignInPage, name: 'SignIn', meta: { requiresGuest: true } },
-  { path: URL_SIGN_UP, component: SignUpPage, name: 'SignUp', meta: { requiresGuest: true } },
+  { path: '/', redirect: { name: ROUTE_NAMES.SIGN_IN } },
   {
-    path: URL_FORGOT_PASSWORD,
-    component: ForgotPasswordPage,
-    name: 'ForgotPassword',
+    path: ROUTE_PATHS[ROUTE_NAMES.SIGN_IN],
+    component: SignInPage,
+    name: ROUTE_NAMES.SIGN_IN,
     meta: { requiresGuest: true },
   },
-  { path: URL_LIST, component: ListPage, name: 'List', meta: { requiresAuth: true } },
   {
-    path: URL_LIST_ITEM,
+    path: ROUTE_PATHS[ROUTE_NAMES.SIGN_UP],
+    component: SignUpPage,
+    name: ROUTE_NAMES.SIGN_UP,
+    meta: { requiresGuest: true },
+  },
+  {
+    path: ROUTE_PATHS[ROUTE_NAMES.FORGOT_PASSWORD],
+    component: ForgotPasswordPage,
+    name: ROUTE_NAMES.FORGOT_PASSWORD,
+    meta: { requiresGuest: true },
+  },
+  {
+    path: ROUTE_PATHS[ROUTE_NAMES.LIST],
+    component: ListPage,
+    name: ROUTE_NAMES.LIST,
+    meta: { requiresAuth: true },
+  },
+  {
+    path: ROUTE_PATHS[ROUTE_NAMES.LIST_ITEM],
     component: ListItemPage,
-    name: 'ListItem',
+    name: ROUTE_NAMES.LIST_ITEM,
     props: true,
     meta: { requiresAuth: true },
   },
-  { path: URL_NOT_FOUND, redirect: URL_SIGN_IN },
+  {
+    path: ROUTE_PATHS[ROUTE_NAMES.NOT_FOUND],
+    redirect: { name: ROUTE_NAMES.SIGN_IN },
+  },
 ]
 
 export const router = createRouter({
@@ -55,9 +66,9 @@ router.beforeEach((to, _from, next) => {
     const requiresGuest = to.matched.some((record) => record.meta.requiresGuest)
 
     if (requiresAuth && !isAuthenticated) {
-      next(URL_SIGN_IN)
+      next({ name: ROUTE_NAMES.SIGN_IN })
     } else if (requiresGuest && isAuthenticated) {
-      next(URL_LIST)
+      next({ name: ROUTE_NAMES.LIST })
     } else {
       next()
     }

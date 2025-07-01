@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onMounted, onUnmounted, ref } from 'vue'
 import { usePokemon } from '@/shared/store/usePokemon'
-import { URL_LIST_ITEM } from '@/shared/config/routes'
+import { ROUTE_NAMES } from '@/shared/config/routes'
 import MainLayout from '@/widgets/MainLayout.vue'
 import CustomButton from '@/shared/ui/CustomButton.vue'
 
@@ -69,7 +69,7 @@ onUnmounted(() => {
         <router-link
           v-for="pokemon in store.pokemonList"
           :key="pokemon.id"
-          :to="`${URL_LIST_ITEM.replace(':id', pokemon.name)}`"
+          :to="{ name: ROUTE_NAMES.LIST_ITEM, params: { id: pokemon.name } }"
           class="group block"
         >
           <div
