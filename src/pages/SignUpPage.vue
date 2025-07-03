@@ -7,10 +7,12 @@ import { ROUTE_NAMES } from '@/shared/config/routes'
 import AuthLayout from '@/widgets/AuthLayout.vue'
 import CustomInput from '@/shared/ui/CustomInput.vue'
 import CustomButton from '@/shared/ui/CustomButton.vue'
+import CustomCheckbox from '@/shared/ui/CustomCheckbox.vue'
 
 const router = useRouter()
 const email = ref('')
 const password = ref('')
+const rememberMe = ref(false)
 const errorMessage = ref('')
 
 const isLoading = ref(false)
@@ -21,7 +23,7 @@ const handleSignUp = async () => {
   errorMessage.value = ''
 
   try {
-    await registerUser(email.value, password.value)
+    await registerUser(email.value, password.value, rememberMe.value)
     router.push({ name: ROUTE_NAMES.LIST })
   } catch (error) {
     if (error instanceof FirebaseError) {
@@ -60,7 +62,11 @@ const handleSignUp = async () => {
         />
       </div>
 
-      <div class="flex gap-6 mt-16">
+      <div class="flex justify-between items-center mt-4 mb-6">
+        <CustomCheckbox v-model="rememberMe">Remember me</CustomCheckbox>
+      </div>
+
+      <div class="flex gap-6">
         <CustomButton type="outlined" :to="{ name: ROUTE_NAMES.SIGN_IN }">Login</CustomButton>
         <CustomButton type="filled" @click="handleSignUp" :disabled="isLoading">
           <template v-if="isLoading">Signing up...</template>

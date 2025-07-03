@@ -11,8 +11,9 @@ import {
 } from 'firebase/auth'
 import { auth } from '@/shared/config/firebase'
 
-export const registerUser = async (email: string, password: string) => {
+export const registerUser = async (email: string, password: string, rememberMe: boolean) => {
   try {
+    await setPersistence(auth, rememberMe ? browserLocalPersistence : browserSessionPersistence)
     const userCredential = await createUserWithEmailAndPassword(auth, email, password)
     return userCredential.user
   } catch (error) {
