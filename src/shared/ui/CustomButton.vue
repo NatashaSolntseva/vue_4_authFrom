@@ -1,7 +1,11 @@
 <script setup lang="ts">
-import { defineProps } from 'vue'
+import type { RouteLocationRaw } from 'vue-router'
 
-defineProps<{ type?: string; to?: string; disabled?: boolean }>()
+defineProps<{
+  type?: string
+  to?: string | RouteLocationRaw
+  disabled?: boolean
+}>()
 </script>
 
 <template>

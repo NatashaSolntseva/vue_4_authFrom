@@ -2,7 +2,7 @@
 import { useRouter } from 'vue-router'
 import { signInWithGoogle } from '@/shared/api/auth'
 import { currentUser } from '@/shared/store/auth'
-import { URL_LIST } from '@/shared/config/routes'
+import { ROUTE_NAMES } from '@/shared/config/routes'
 
 defineProps({
   subtitle: { type: String, required: true },
@@ -14,7 +14,7 @@ const handleGoogleLogin = async () => {
   try {
     const user = await signInWithGoogle()
     currentUser.value = user
-    router.push(URL_LIST)
+    router.push({ name: ROUTE_NAMES.LIST })
   } catch (error) {
     console.error('Google login failed:', error)
   }

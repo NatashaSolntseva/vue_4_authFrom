@@ -1,6 +1,17 @@
-export const URL_SIGN_IN = '/signin'
-export const URL_SIGN_UP = '/signup'
-export const URL_FORGOT_PASSWORD = '/forgot-password'
-export const URL_LIST = '/list'
-export const URL_LIST_ITEM = '/list/:id'
-export const URL_NOT_FOUND = '/:pathMatch(.*)*'
+export enum ROUTE_NAMES {
+  SIGN_IN = 'SignIn',
+  SIGN_UP = 'SignUp',
+  FORGOT_PASSWORD = 'ForgotPassword',
+  LIST = 'List',
+  LIST_ITEM = 'ListItem',
+  NOT_FOUND = 'NotFound',
+}
+
+export const ROUTE_PATHS = {
+  [ROUTE_NAMES.SIGN_IN]: '/signin',
+  [ROUTE_NAMES.SIGN_UP]: '/signup',
+  [ROUTE_NAMES.FORGOT_PASSWORD]: '/forgot-password',
+  [ROUTE_NAMES.LIST]: '/list',
+  [ROUTE_NAMES.LIST_ITEM]: '/list/:id',
+  [ROUTE_NAMES.NOT_FOUND]: '/:pathMatch(.*)*',
+}
